@@ -1,0 +1,21 @@
+{
+    "KPlugin": {
+        "Name": "Main Browser Position",
+        "Description": "Sets the position of your 'main' browser window",
+        "Icon": "preferences-system-windows",
+        "Authors": [
+            {
+                "Email": "agwhitaker-dev@protonmail.com",
+                "Name": "Andrew Whitaker"
+            }
+        ],
+        "Id": "mainbrowser",
+        "Version": "1.0",
+        "License": "GPLv3",
+        "Website": "https://github.com/agwhitaker93/dotfiles"
+    },
+    "X-Plasma-API": "javascript",
+    "X-Plasma-MainScript": "code/main.js",
+    "X-KDE-ConfigModule": "kwin/effects/configs/kcm_kwin4_genericscripted",
+    "KPackageStructure": "KWin/Script"
+}
