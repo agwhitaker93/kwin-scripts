@@ -7,6 +7,8 @@ const width = readConfig('width', 1280)
 const height = readConfig('height', 720)
 const delay = readConfig('delay', 1000)
 
+let mainClient
+
 function lowerCaseIfRequested(str) {
     if (caseInsensitiveWindowTitleMatch) {
         return str.toLowerCase()
@@ -19,9 +21,11 @@ function clientMatch(client) {
 }
 
 function handleClient(client) {
-    client.desktop = displayToUse
-    client.noBorder = true
-    client.frameGeometry = {
+    if (mainClient) return
+    mainClient = client
+    mainClient.desktop = displayToUse
+    mainClient.noBorder = true
+    mainClient.frameGeometry = {
         x, y,
         width, height
     }
@@ -39,4 +43,10 @@ workspace.clientAdded.connect((client) => {
         if (clientMatch(client)) handleClient(client)
     })
     timer.start()
+})
+
+workspace.clientRemoved.connect((client) => {
+    if (client === mainClient) {
+        mainClient = null
+    }
 })
