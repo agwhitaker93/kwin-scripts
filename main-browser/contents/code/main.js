@@ -10,43 +10,47 @@ const delay = readConfig('delay', 1000)
 let mainClient
 
 function lowerCaseIfRequested(str) {
-    if (caseInsensitiveWindowTitleMatch) {
-        return str.toLowerCase()
+  if (caseInsensitiveWindowTitleMatch) {
+    try {
+      return str.toLowerCase()
+    } catch (e) {
+      console.error(`Encountered error calling toLowerCase on string: ${str}`)
     }
-    return str
+  }
+  return str
 }
 
 function clientMatch(client) {
-    return lowerCaseIfRequested(client.caption).indexOf(lowerCaseIfRequested(windowTitleSubstring)) >= 0
+  return lowerCaseIfRequested(client.caption).indexOf(lowerCaseIfRequested(windowTitleSubstring)) >= 0
 }
 
 function handleClient(client) {
-    if (mainClient) return
-    mainClient = client
-    mainClient.desktop = displayToUse
-    mainClient.noBorder = true
-    mainClient.frameGeometry = {
-        x, y,
-        width, height
-    }
+  if (mainClient) return
+  mainClient = client
+  mainClient.desktop = displayToUse
+  mainClient.noBorder = true
+  mainClient.frameGeometry = {
+    x, y,
+    width, height
+  }
 }
 
 workspace.clientList()
-    .filter(clientMatch)
-    .map(handleClient)
+  .filter(clientMatch)
+  .map(handleClient)
 
 workspace.clientAdded.connect((client) => {
-    const timer = new QTimer()
-    timer.interval = delay
-    timer.timeout.connect(() => {
-        timer.stop()
-        if (clientMatch(client)) handleClient(client)
-    })
-    timer.start()
+  const timer = new QTimer()
+  timer.interval = delay
+  timer.timeout.connect(() => {
+    timer.stop()
+    if (clientMatch(client)) handleClient(client)
+  })
+  timer.start()
 })
 
 workspace.clientRemoved.connect((client) => {
-    if (client === mainClient) {
-        mainClient = null
-    }
+  if (client === mainClient) {
+    mainClient = null
+  }
 })

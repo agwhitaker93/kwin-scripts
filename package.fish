@@ -2,6 +2,6 @@
 
 for dirEntry in (ls);
     if test -d $dirEntry
-        kpackagetool5 --type=KWin/Script -i $dirEntry
+        kpackagetool6 --type=KWin/Script -i $dirEntry
     end
 end
